@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  mc:
+    build:
+      context: .
+    image: dockermc
+    volumes:
+      - ./start.py:/mc/start.py
+      - ./data:/mc/data
+    command: []
+    environment:
+      TZ: Etc/UTC
+    ports:
+      - 25565:25565
