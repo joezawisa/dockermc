@@ -60,20 +60,20 @@ if not os.path.exists(f'versions/{version}.jar'):
         print('Error: failed to find server URL', file=sys.stderr)
         sys.exit(1)
     
-    # Download the server
+    # Download the server (we do this in chunks since it might be big)
     if server is None:
         print('Error: Requested version not found', file=sys.stderr)
         sys.exit(1)
     else:
-        r = requests.get(server, stream=True)
-        if r.ok:
-            with open(f'versions/{version}.jar', 'wb') as jar:
-                for chunk in r.iter_content(chunk_size=1024):
-                    if chunk:
-                        jar.write(chunk)
-        else:
-            print('Error: failed to download server', file=sys.stderr)
-            sys.exit(1)
+        with requests.get(server, stream=True) as r:
+            if r.ok:
+                with open(f'versions/{version}.jar', 'wb') as jar:
+                    for chunk in r.iter_content(chunk_size=1024):
+                        if chunk:
+                            jar.write(chunk)
+            else:
+                print('Error: failed to download server', file=sys.stderr)
+                sys.exit(1)
 
 # Start the server
 os.chdir('./data')
