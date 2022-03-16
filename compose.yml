@@ -6,7 +6,6 @@ services:
       context: .
     image: dockermc
     volumes:
-      - ./start.py:/mc/start.py
       - ./data:/mc/data
     command: []
     environment:
